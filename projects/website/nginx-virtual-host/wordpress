@@ -1,0 +1,82 @@
+server {
+listen 80;
+server_name wordpress.example.com;
+root /var/www/wordpress.example.com;
+index index.php index.html test.php test.html;
+
+location = /favicon.ico {
+
+	log_not_found off;
+
+	access_log off;
+
+}
+
+location = /robots.txt {allow all; log_not_found off; access_log off;}
+
+location / {
+	try_files $uri $uri/ /index.php?$args;
+}
+
+
+location /mailadmin/{
+        alias /data/www/postfixadmin/;
+        index index.php;
+
+	try_files $uri $uri/ /mailadmin/index.php?$args;
+        
+	location ~^/mailadmin/(.+\.php)$ {
+#       	    alias /data/www/postfixadmin/public/$1
+	    include fastcgi_params;
+	    fastcgi_index index.php;
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_param SCRIPT_FILENAME $request_filename;
+	 }
+	location ~* ^/mailadmin/(.+\.(js|css|png|jpg|jpeg|gif|ico))$ {
+            alias /data/www/postfixadmin/public;
+            expires max;
+            log_not_found off;
+        }
+}
+
+location /webmail/ {
+        alias /data/www/roundcube/;
+        index index.php;
+        try_files $uri $uri/ /webmail/index.php?$args;
+
+        location ~^/webmail/(.+\.php)$ {
+            include fastcgi_params;
+	    fastcgi_pass 127.0.0.1:9000;
+            fastcgi_param SCRIPT_FILENAME $request_filename;
+        }
+	
+	error_log /var/log/nginx/roundcube.error debug;
+	access_log /var/log/nginx/roundcube.access;  
+  }
+
+location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 300;
+        fastcgi_send_timeout 300;
+
+} 
+
+location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+	expires max;
+	log_not_found off;
+}
+	error_log /var/log/nginx/wordpress_error.log debug;
+	access_log /var/log/nginx/wordpress_access.log;
+
+location ~ /\.env {
+    deny all;
+}
+
+  location ~ /\.ht {
+    deny all;
+  }
+
+}
+
