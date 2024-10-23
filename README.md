@@ -22,12 +22,12 @@ This repository contains the configuration and setup for a complete WordPress we
 
 - Ubuntu Server (Latest LTS recommended)
 - MySQL 8.0+
-- PHP 8.3+
-- Nginx 1.26+
+- PHP 7.3+
+- Nginx
 - Minimum 2GB RAM
 
 ## Installation
-## Note that the LEMP stack was installed through its repositories (not Ubuntu default repositories).
+## The LEMP Stack should not be installed from Ubuntu's default repository, as packages in Ubuntu's default repositories may be outdated. The latest stable versions should be installed from the Nginx, MySQL, and Ondrej repositories.
 ## Ubuntu 22.04
 ## Nginx- https://nginx.org/en/linux_packages.html
 ## PHP 8.3- https://www.atlantic.net/dedicated-server-hosting/how-to-install-php-8-3-on-ubuntu-22-04/
@@ -37,7 +37,7 @@ This repository contains the configuration and setup for a complete WordPress we
 ```bash
 # WordPress core installation steps
 apt update && apt upgrade
-apt install mysql-server php php-mysql
+##
 # Additional WordPress-specific steps documented in /wordpress/README.md
 ```
 
