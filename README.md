@@ -1,4 +1,3 @@
-# muazu-s-repo
 # WordPress and Mail Server Infrastructure
 
 This repository contains the configuration and setup for a complete WordPress website infrastructure with an integrated mail server system, deployed on Ubuntu. The project demonstrates the implementation of a full-stack web and email solution.
